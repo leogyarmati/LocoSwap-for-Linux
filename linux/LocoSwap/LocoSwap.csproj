@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>LocoSwap</RootNamespace>
+    <AssemblyName>LocoSwap</AssemblyName>
+    <Version>2.0.0</Version>
+    <ApplicationManifest></ApplicationManifest>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Any 11.x release works; pin an exact version here if you want reproducible builds. -->
+    <PackageReference Include="Avalonia" Version="11.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.*" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LocoSwap.Core\LocoSwap.Core.csproj" />
+    <ProjectReference Include="..\LocoSwap.Language\LocoSwap.Language.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**\*.png" />
+    <None Include="LocoSwap_manual.docx" CopyToOutputDirectory="PreserveNewest" Condition="Exists('LocoSwap_manual.docx')" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        x:Class="LocoSwap.VehicleNumberSelectionWindow"
+        Title="{x:Static lang:Resources.select_vehicle_number}" Width="270" Height="480" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="*,Auto,Auto" Margin="10">
+    <ListBox x:Name="NumberListBox" SelectionChanged="ListBox_SelectionChanged" />
+    <StackPanel x:Name="ManualPanel" Grid.Row="1" Margin="0,10,0,0" Spacing="4">
+      <TextBlock Text="{x:Static lang:Resources.enter_number_manually}" TextWrapping="Wrap" />
+      <TextBox x:Name="NumberBox" />
+    </StackPanel>
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,10,0,0">
+      <Button x:Name="CancelButton" Content="{x:Static lang:Resources.cancel}" MinWidth="75" Click="CancelButton_Click" />
+      <Button x:Name="OkButton" Content="{x:Static lang:Resources.ok}" MinWidth="75" IsDefault="True" Click="OkButton_Click" />
+    </StackPanel>
+  </Grid>
+</Window>

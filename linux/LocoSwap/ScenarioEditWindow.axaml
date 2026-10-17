@@ -1,0 +1,180 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        xmlns:local="clr-namespace:LocoSwap"
+        x:Class="LocoSwap.ScenarioEditWindow"
+        Title="LocoSwap" Width="1315" Height="880" MinWidth="1000" MinHeight="650">
+  <Window.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Padding" Value="4,2" />
+    </Style>
+    <Style Selector="TreeViewItem">
+      <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+      <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+    </Style>
+    <Style Selector="Border.box">
+      <Setter Property="BorderBrush" Value="#60808080" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="3" />
+      <Setter Property="Padding" Value="10" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,*" Margin="10">
+
+    <!-- Header: route / scenario / progress / global buttons -->
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" Margin="0,0,0,10">
+      <TextBlock Text="{x:Static lang:Resources.route}" VerticalAlignment="Center" Margin="0,0,10,0" />
+      <TextBox x:Name="RouteNameBox" Grid.Column="1" IsReadOnly="True" Margin="0,0,10,4" />
+      <TextBlock Grid.Row="1" Text="{x:Static lang:Resources.scenario}" VerticalAlignment="Center" Margin="0,0,10,0" />
+      <TextBox x:Name="ScenarioNameBox" Grid.Row="1" Grid.Column="1" IsReadOnly="True" Margin="0,0,10,0" />
+
+      <StackPanel Grid.Column="2" Grid.RowSpan="2" Width="260" IsVisible="{Binding LoadingGridVisible}" VerticalAlignment="Center" Margin="0,0,10,0">
+        <TextBlock Text="{Binding LoadingInformation}" HorizontalAlignment="Center" />
+        <ProgressBar Minimum="0" Maximum="100" Value="{Binding LoadingProgress}" Height="18" />
+      </StackPanel>
+
+      <StackPanel Grid.Column="3" Grid.RowSpan="2" Spacing="4" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right">
+          <Button Content="{x:Static lang:Resources.replacement_rules}" Click="PresetButton_Click" />
+          <Button Content="{x:Static lang:Resources.save}" IsEnabled="{Binding SaveButtonEnabled}" Click="SaveButton_Click" MinWidth="84" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right">
+          <Button Content="{x:Static lang:Resources.all_vehicles}" IsEnabled="{Binding SaveButtonEnabled}" Click="AllVehiclesListButton_Click" MinWidth="219" />
+          <Button Click="OpenManual_Click" Padding="4" ToolTip.Tip="{x:Static lang:Resources.open_manual}">
+            <Image Source="avares://LocoSwap/Assets/Help.png" Width="14" Height="14" />
+          </Button>
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+
+    <Grid Grid.Row="1" ColumnDefinitions="260,270,330,*">
+
+      <!-- Consists -->
+      <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="0,0,8,0">
+        <StackPanel Spacing="4" Margin="0,0,0,4">
+          <TextBlock Text="{x:Static lang:Resources.consists_in_scenario}" />
+          <Button Content="{x:Static lang:Resources.apply_all_rules}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+            <Button.Flyout>
+              <MenuFlyout>
+                <MenuItem Header="{x:Static lang:Resources.only_on_missing_stock}" Click="ApplyAllRulesOnlyOnMissingStock_Click" />
+                <MenuItem Header="{x:Static lang:Resources.on_all_stock}" Click="ApplyAllRulesOnAllStock_Click" />
+              </MenuFlyout>
+            </Button.Flyout>
+          </Button>
+        </StackPanel>
+        <ListBox x:Name="ConsistListBox" Grid.Row="1" SelectionChanged="ConsistListBox_SelectionChanged">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal" Spacing="5">
+                <Image Width="8" Height="8" Source="{Binding IsComplete, Converter={x:Static local:Converters.ConsistStatus}}" />
+                <Image Width="8" Height="8" IsVisible="{Binding IsPlayerConsist}" Source="avares://LocoSwap/Assets/Player.png" />
+                <TextBlock Text="{Binding Name}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+
+      <!-- Vehicles of the selected consist -->
+      <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="0,0,8,0">
+        <TextBlock Text="{x:Static lang:Resources.vehicles_in_selected_consist}" Margin="0,0,0,4" />
+        <ListBox x:Name="VehicleListBox" Grid.Row="1" SelectionMode="Multiple" SelectionChanged="VehicleListBox_SelectionChanged">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal" Spacing="5" ToolTip.Tip="{Binding PossibleSubstitutionDisplayName}">
+                <Image Width="8" Height="8" Source="{Binding Exists, Converter={x:Static local:Converters.VehicleStatus}}" />
+                <Image Height="10" IsVisible="{Binding IsInvolvedInConsistOperation}" Source="avares://LocoSwap/Assets/Coupling.png" />
+                <TextBlock Text="{Binding ListLabel}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+
+      <!-- Actions + details -->
+      <ScrollViewer Grid.Column="2" Margin="0,0,8,0">
+        <StackPanel Spacing="8">
+          <Border Classes="box">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{x:Static lang:Resources.vehicle_to_be_replaced}" FontWeight="SemiBold" />
+              <TextBlock Text="{x:Static lang:Resources.name}" />
+              <TextBox x:Name="SelNameBox" IsReadOnly="True" />
+              <TextBlock Text="{x:Static lang:Resources.number}" />
+              <TextBox x:Name="SelNumberBox" IsReadOnly="True" />
+              <TextBlock Text="{x:Static lang:Resources.path}" />
+              <TextBox x:Name="SelPathBox" IsReadOnly="True" TextWrapping="Wrap" Height="52" />
+              <Grid ColumnDefinitions="*,Auto">
+                <Image x:Name="SelImage" Height="111" Stretch="Uniform" HorizontalAlignment="Left" />
+                <StackPanel Grid.Column="1" Spacing="4" Width="125">
+                  <CheckBox x:Name="SelFlippedBox" Content="{x:Static lang:Resources.flipped}" IsEnabled="False" />
+                  <TextBlock x:Name="InvolvedText" Text="{x:Static lang:Resources.involved_in_consist_operation}" TextWrapping="Wrap" Foreground="#F41818" IsVisible="False" />
+                </StackPanel>
+              </Grid>
+              <Grid ColumnDefinitions="*,*" Margin="0,4,0,0">
+                <Button x:Name="ChangeNumberButton" Content="{x:Static lang:Resources.change_number}" Click="ChangeNumberButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,0,3,0" />
+                <Button x:Name="FlipButton" Grid.Column="1" Content="{x:Static lang:Resources.flip}" Click="FlipButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="3,0,0,0" />
+              </Grid>
+            </StackPanel>
+          </Border>
+
+          <Grid ColumnDefinitions="*,*">
+            <Button x:Name="InsertBeforeButton" Content="{x:Static lang:Resources.insert_before}" Click="InsertBeforeButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,0,3,0" />
+            <Button x:Name="InsertAfterButton" Grid.Column="1" Content="{x:Static lang:Resources.insert_after}" Click="InsertAfterButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="3,0,0,0" />
+          </Grid>
+          <Button x:Name="RemoveButton" Content="{x:Static lang:Resources.remove}" Click="RemoveButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Button x:Name="ReplaceButton" Content="{x:Static lang:Resources.replace}" Click="ReplaceButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+          <Grid ColumnDefinitions="*,*">
+            <Button x:Name="ReplaceIdenticalButton" Content="{x:Static lang:Resources.replace_identical}" Click="ReplaceIdenticalButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,0,3,0" />
+            <CheckBox x:Name="AddAsRule" Grid.Column="1" Content="{x:Static lang:Resources.and_add_as_rule}" IsChecked="True" Margin="6,0,0,0" />
+          </Grid>
+          <Button x:Name="AddToRulesButton" Content="{x:Static lang:Resources.add_to_rules}" Click="AddToRulesButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+
+          <Border Classes="box">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{x:Static lang:Resources.new_vehicle_selected}" FontWeight="SemiBold" />
+              <TextBlock Text="{x:Static lang:Resources.name}" />
+              <TextBox x:Name="NewNameBox" IsReadOnly="True" />
+              <TextBlock Text="{x:Static lang:Resources.path}" />
+              <TextBox x:Name="NewPathBox" IsReadOnly="True" TextWrapping="Wrap" Height="52" />
+              <Image x:Name="NewImage" Height="134" Stretch="Uniform" HorizontalAlignment="Left" />
+              <Button x:Name="NumberListButton" Content="{x:Static lang:Resources.numbering_list}" Click="AvailableVehicleNumberListButton_Click" MinWidth="125" HorizontalAlignment="Left" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <!-- Asset tree + available vehicles -->
+      <Grid Grid.Column="3" RowDefinitions="Auto,*,Auto,Auto,2*">
+        <TextBlock Text="{x:Static lang:Resources.replace_with}" Margin="0,0,0,4" />
+        <TreeView x:Name="DirectoryTree" Grid.Row="1" KeyDown="DirectoryTree_KeyDown">
+          <TreeView.ItemTemplate>
+            <TreeDataTemplate ItemsSource="{Binding SubDirectories}">
+              <TextBlock Text="{Binding Name}" />
+            </TreeDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="6" Margin="0,8,0,8">
+          <Button Content="{x:Static lang:Resources.look_up_vehicles}" IsEnabled="{Binding ScanEnabled}" Click="ScanButton_Click" MinWidth="168" HorizontalContentAlignment="Center" />
+          <Button x:Name="ClearButton" Content="{x:Static lang:Resources.clear_vehicles}" Click="AvailableVehiclesClearButton_Click" />
+          <Button Content="{x:Static lang:Resources.cancel}" IsVisible="{Binding VehicleScanInProgress}" Click="CancelScanningButton_Click" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="6" Margin="0,0,0,4">
+          <TextBlock Text="{x:Static lang:Resources.filter}" VerticalAlignment="Center" />
+          <TextBox x:Name="AvailableVehicleFilterTextbox" Width="180" />
+          <Button Click="EmptyAvailableVehicleFilter_Click" Padding="4">
+            <Image Source="avares://LocoSwap/Assets/Delete.png" Width="12" Height="12" />
+          </Button>
+        </StackPanel>
+        <ListBox x:Name="AvailableVehicleListBox" Grid.Row="4" SelectionChanged="AvailableVehicleListBox_SelectionChanged">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding ListLabel}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>
