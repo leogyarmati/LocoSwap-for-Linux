@@ -24,7 +24,7 @@ namespace LocoSwap
         public MainWindow()
         {
             InitializeComponent();
-            Title = "LocoSwap " + typeof(MainWindow).Assembly.GetName().Version;
+            Title = "LocoSwap " + AppInfo.Version;
 
             RouteFilterTextbox.PropertyChanged += (s, e) => { if (e.Property == TextBox.TextProperty) RefreshRouteView(); };
             ScenarioFilterTextbox.PropertyChanged += (s, e) => { if (e.Property == TextBox.TextProperty) RebuildScenarioView(); };

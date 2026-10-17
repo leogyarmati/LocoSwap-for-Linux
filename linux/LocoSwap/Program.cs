@@ -13,7 +13,7 @@ namespace LocoSwap
         public static void Main(string[] args)
         {
             Log.Init(Path.Combine(Settings.ConfigDir, "debug.log"));
-            Log.Debug("LocoSwap {0} starting up..", typeof(Program).Assembly.GetName().Version);
+            Log.Debug("LocoSwap {0} starting up..", AppInfo.Version);
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
                 Log.Error("Uncaught exception: {0}", e.ExceptionObject);
