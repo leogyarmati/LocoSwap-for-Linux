@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        x:Class="LocoSwap.SettingsWindow"
+        Title="{x:Static lang:Resources.settings}" Width="640" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+  <StackPanel Margin="14" Spacing="10">
+    <Grid ColumnDefinitions="190,*,Auto" RowDefinitions="Auto,Auto,Auto" >
+      <TextBlock Text="{x:Static lang:Resources.ts_directory}" VerticalAlignment="Center" />
+      <TextBox x:Name="TsPathBox" Grid.Column="1" IsReadOnly="True" Margin="0,0,6,0" />
+      <Button x:Name="BrowseButton" Grid.Column="2" Content="{x:Static lang:Resources.browse}" Click="TsPathBrowseButton_Click" />
+
+      <TextBlock Grid.Row="1" Text="{x:Static lang:Resources.language}" VerticalAlignment="Center" Margin="0,10,0,0" />
+      <ComboBox x:Name="LanguageComboBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="0,10,0,0" />
+
+      <TextBlock Grid.Row="2" Text="{x:Static lang:Resources.scenario_name_suffix}" VerticalAlignment="Center" Margin="0,10,0,0" />
+      <TextBox x:Name="SuffixBox" Grid.Row="2" Grid.Column="1" Width="160" HorizontalAlignment="Left" Margin="0,10,0,0" />
+    </Grid>
+
+    <CheckBox x:Name="CheckConsistsBox" Content="{x:Static lang:Resources.check_all_scenario_consists}" />
+    <CheckBox x:Name="NoArchiveWorkshopBox" Content="{x:Static lang:Resources.do_not_auto_archive_workshop_routes}" />
+
+    <Separator />
+    <TextBlock Text="{x:Static lang:Resources.runner_command}" FontWeight="SemiBold" />
+    <TextBox x:Name="RunnerBox" />
+    <TextBlock Text="{x:Static lang:Resources.runner_command_hint}" TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+    <TextBlock Text="{x:Static lang:Resources.runner_env}" FontWeight="SemiBold" />
+    <TextBox x:Name="RunnerEnvBox" AcceptsReturn="True" Height="70" />
+    <TextBlock Text="{x:Static lang:Resources.runner_env_hint}" TextWrapping="Wrap" FontSize="12" Opacity="0.7" />
+
+    <Button x:Name="CloseButton" Content="{x:Static lang:Resources.close}" HorizontalAlignment="Right" MinWidth="90" Click="CloseButton_Click" />
+  </StackPanel>
+</Window>

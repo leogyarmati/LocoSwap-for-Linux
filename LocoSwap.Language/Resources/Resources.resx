@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -428,5 +428,37 @@
   </data>
   <data name="vehicle_to_be_replaced" xml:space="preserve">
     <value>Vehicle to be replaced</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="runner_command" xml:space="preserve">
+    <value>Wine / Proton command</value>
+  </data>
+  <data name="runner_command_hint" xml:space="preserve">
+    <value>Command used to run serz.exe, e.g. "wine" or "/path/to/Proton/proton run". Leave empty for "wine".</value>
+  </data>
+  <data name="runner_env" xml:space="preserve">
+    <value>Environment variables</value>
+  </data>
+  <data name="runner_env_hint" xml:space="preserve">
+    <value>One KEY=VALUE per line, e.g. WINEPREFIX=/home/me/.local/share/Steam/steamapps/compatdata/24010/pfx</value>
+  </data>
+  <data name="msg_ts_detected" xml:space="preserve">
+    <value>Train Simulator was found at:
+
+{0}
+
+Use this folder?</value>
+  </data>
+  <data name="msg_conversion_failed" xml:space="preserve">
+    <value>Could not convert the scenario files with serz.exe.
+
+{0}
+
+Check the Wine/Proton command in the settings.</value>
   </data>
 </root>

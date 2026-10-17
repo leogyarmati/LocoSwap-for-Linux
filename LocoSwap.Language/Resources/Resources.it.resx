@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -419,5 +419,11 @@
   </data>
   <data name="vehicle_to_be_replaced" xml:space="preserve">
     <value>Rotabile è stato sostituito</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>No</value>
   </data>
 </root>

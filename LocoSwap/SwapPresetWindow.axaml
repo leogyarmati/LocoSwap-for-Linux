@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        x:Class="LocoSwap.SwapPresetWindow"
+        Title="{x:Static lang:Resources.replacement_rules_management}" Width="640" Height="400"
+        WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="10">
+    <StackPanel Orientation="Horizontal" Spacing="6">
+      <TextBlock Text="{x:Static lang:Resources.filter}" VerticalAlignment="Center" />
+      <TextBox x:Name="PresetsFilterTextbox" Width="180" />
+      <Button Click="EmptyPresetFilter_Click" Padding="4">
+        <Image Source="avares://LocoSwap/Assets/Delete.png" Width="12" Height="12" />
+      </Button>
+    </StackPanel>
+    <Grid Grid.Row="1" ColumnDefinitions="*,*" Background="#20808080" Margin="0,8,0,0">
+      <TextBlock Text="{x:Static lang:Resources.rule_find}" FontWeight="SemiBold" Margin="8,3" />
+      <TextBlock Grid.Column="1" Text="{x:Static lang:Resources.rule_replace}" FontWeight="SemiBold" Margin="8,3" />
+    </Grid>
+    <ListBox x:Name="PresetList" Grid.Row="2">
+      <ListBox.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+      </ListBox.Styles>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Grid ColumnDefinitions="*,*">
+            <TextBlock Text="{Binding TargetName}" ToolTip.Tip="{Binding TargetXmlPath}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+            <TextBlock Grid.Column="1" Text="{Binding NewName}" ToolTip.Tip="{Binding NewXmlPath}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,10,0,0">
+      <Button Content="{x:Static lang:Resources.apply}" MinWidth="119" Click="ApplyButton_Click" Margin="0,0,6,0" />
+      <Button Grid.Column="1" Content="{x:Static lang:Resources.delete}" MinWidth="117" Click="DeleteButton_Click" />
+      <Button Grid.Column="3" Content="{x:Static lang:Resources.close}" MinWidth="75" Click="CloseButton_Click" />
+    </Grid>
+  </Grid>
+</Window>

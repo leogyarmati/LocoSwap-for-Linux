@@ -1,0 +1,115 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        xmlns:local="clr-namespace:LocoSwap"
+        x:Class="LocoSwap.MainWindow"
+        Title="LocoSwap" Width="1125" Height="701" MinWidth="800" MinHeight="500">
+  <Window.Styles>
+    <Style Selector="ListBoxItem">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Padding" Value="4,2" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,2*,Auto,3*,Auto" Margin="10">
+
+    <!-- Route toolbar -->
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+      <StackPanel Orientation="Horizontal" Spacing="6">
+        <TextBlock Text="{x:Static lang:Resources.filter}" VerticalAlignment="Center" />
+        <TextBox x:Name="RouteFilterTextbox" Width="140" />
+        <Button Click="EmptyRouteFilter_Click" Padding="4">
+          <Image Source="avares://LocoSwap/Assets/Delete.png" Width="12" Height="12" />
+        </Button>
+        <Button x:Name="ArchiveToggleButton" Content="{x:Static lang:Resources.archive_toggle}" Click="ToggleArchiveRoutes_Click" Margin="20,0,0,0" />
+        <Button x:Name="ArchiveRestButton" Click="ArchiveAllButSelectedRoutes_Click">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="AutoArchive - " />
+            <TextBlock Text="{x:Static lang:Resources.archive_rest}" />
+          </StackPanel>
+        </Button>
+      </StackPanel>
+      <Button Grid.Column="1" Click="OpenManual_Click" Padding="4" ToolTip.Tip="{x:Static lang:Resources.open_manual}">
+        <Image Source="avares://LocoSwap/Assets/Help.png" Width="14" Height="14" />
+      </Button>
+    </Grid>
+
+    <!-- Routes -->
+    <Grid Grid.Row="1" RowDefinitions="Auto,*">
+      <Grid ColumnDefinitions="30,*,300" Background="#20808080">
+        <TextBlock Grid.Column="1" Text="{x:Static lang:Resources.name}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="2" Text="{x:Static lang:Resources.id}" FontWeight="SemiBold" Margin="4,3" />
+      </Grid>
+      <ListBox x:Name="RouteList" Grid.Row="1" SelectionMode="Multiple" SelectionChanged="RouteList_SelectionChanged">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid ColumnDefinitions="30,*,300" Background="{Binding IsArchived, Converter={x:Static local:Converters.ArchivedBrush}}">
+              <Button Grid.Column="0" Click="Favorite_Click" Padding="0" Background="Transparent" BorderThickness="0" Width="24" Height="22" HorizontalAlignment="Left">
+                <Image Width="16" Height="16" Source="{Binding IsFavorite, Converter={x:Static local:Converters.Star}}" />
+              </Button>
+              <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+              <TextBlock Grid.Column="2" Text="{Binding Id}" VerticalAlignment="Center" />
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <!-- Scenario toolbar -->
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="6" Margin="0,10,0,6">
+      <TextBlock Text="{x:Static lang:Resources.filter}" VerticalAlignment="Center" />
+      <TextBox x:Name="ScenarioFilterTextbox" Width="140" />
+      <Button Click="EmptyScenarioFilter_Click" Padding="4">
+        <Image Source="avares://LocoSwap/Assets/Delete.png" Width="12" Height="12" />
+      </Button>
+      <CheckBox x:Name="HidePlayedScenariosCheckbox" Content="{x:Static lang:Resources.hide_played_scenarios}" Margin="20,0,0,0" />
+    </StackPanel>
+
+    <!-- Scenarios -->
+    <Grid Grid.Row="3" RowDefinitions="Auto,*">
+      <Grid ColumnDefinitions="22,*,100,170,70,60,80,130,140,140" Background="#20808080">
+        <TextBlock Grid.Column="1" Text="{x:Static lang:Resources.name}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="2" Text="{x:Static lang:Resources.id}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="3" Text="{x:Static lang:Resources.player_train_name}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="4" Text="{x:Static lang:Resources.duration}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="5" Text="{x:Static lang:Resources.start_time}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="6" Text="{x:Static lang:Resources.season}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="7" Text="{x:Static lang:Resources.author}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="8" Text="{x:Static lang:Resources.completion}" FontWeight="SemiBold" Margin="4,3" />
+        <TextBlock Grid.Column="9" Text="{x:Static lang:Resources.game_save_date}" FontWeight="SemiBold" Margin="4,3" />
+      </Grid>
+      <ListBox x:Name="ScenarioList" Grid.Row="1" SelectionMode="Multiple"
+               SelectionChanged="ScenarioList_SelectionChanged" DoubleTapped="ScenarioList_DoubleTapped">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid ColumnDefinitions="22,*,100,170,70,60,80,130,140,140"
+                  Background="{Binding IsArchived, Converter={x:Static local:Converters.ArchivedBrush}}"
+                  ToolTip.Tip="{Binding TooltipText}">
+              <Image Grid.Column="0" Width="8" Height="8" HorizontalAlignment="Left" Margin="4,0,0,0"
+                     Source="{Binding ScenarioVehiclesExist, Converter={x:Static local:Converters.ScenarioStatus}}" />
+              <TextBlock Grid.Column="1" Text="{Binding Name}" FontStyle="{Binding ApFileName, Converter={x:Static local:Converters.ApFontStyle}}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+              <TextBlock Grid.Column="2" Text="{Binding Id}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+              <TextBlock Grid.Column="3" Text="{Binding PlayerTrainName}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+              <TextBlock Grid.Column="4" Text="{Binding Duration}" Margin="4,0" />
+              <TextBlock Grid.Column="5" Text="{Binding StartTimeText}" Margin="4,0" />
+              <TextBlock Grid.Column="6" Text="{Binding LocalizedSeason}" Margin="4,0" />
+              <TextBlock Grid.Column="7" Text="{Binding Author}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+              <TextBlock Grid.Column="8" Text="{Binding LocalizedCompletion}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+              <TextBlock Grid.Column="9" Text="{Binding LastPlayedText}" TextTrimming="CharacterEllipsis" Margin="4,0" />
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <!-- Bottom buttons -->
+    <Grid Grid.Row="4" ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+      <StackPanel Orientation="Horizontal" Spacing="6">
+        <Button x:Name="EditScenarioButton" Content="{x:Static lang:Resources.edit_scenario}" Click="EditScenarioButton_Click" MinWidth="145" IsEnabled="False" />
+        <Button x:Name="OpenScenarioDirButton" Content="{x:Static lang:Resources.open_scenario_directory}" Click="OpenScenarioDirButton_Click" MinWidth="172" IsEnabled="False" />
+        <Button x:Name="DeleteScenariosButton" Content="{x:Static lang:Resources.delete_scenarios}" Click="Delete_Scenarios_Click" MinWidth="172" IsEnabled="False" />
+      </StackPanel>
+      <Button Grid.Column="1" x:Name="SettingsButton" Content="{x:Static lang:Resources.settings}" Click="SettingsButton_Click" MinWidth="150" />
+    </Grid>
+  </Grid>
+</Window>

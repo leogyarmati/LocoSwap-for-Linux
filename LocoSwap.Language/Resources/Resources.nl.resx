@@ -429,4 +429,10 @@
   <data name="vehicle_to_be_replaced" xml:space="preserve">
     <value>Dit voertuig wordt vervangen</value>
   </data>
+  <data name="yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>Nee</value>
+  </data>
 </root>

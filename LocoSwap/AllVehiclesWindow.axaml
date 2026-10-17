@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lang="clr-namespace:LocoSwap.Language;assembly=LocoSwap.Language"
+        xmlns:local="clr-namespace:LocoSwap"
+        x:Class="LocoSwap.AllVehiclesWindow"
+        Title="{x:Static lang:Resources.all_vehicles}" Width="700" Height="450"
+        WindowStartupLocation="CenterOwner">
+  <Grid ColumnDefinitions="*,320" Margin="10">
+    <ListBox x:Name="VehicleListBox" SelectionChanged="VehicleListBox_SelectionChanged">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Image Width="8" Height="8" Source="{Binding Exists, Converter={x:Static local:Converters.VehicleStatus}}" />
+            <TextBlock Text="{Binding DisplayName}" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <StackPanel Grid.Column="1" Margin="10,0,0,0" Spacing="6">
+      <TextBlock Text="{x:Static lang:Resources.vehicle_selected}" FontWeight="SemiBold" />
+      <TextBlock Text="{x:Static lang:Resources.name}" />
+      <TextBox x:Name="NameBox" IsReadOnly="True" />
+      <TextBlock Text="{x:Static lang:Resources.number}" />
+      <TextBox x:Name="NumberBox" IsReadOnly="True" />
+      <TextBlock Text="{x:Static lang:Resources.path}" />
+      <TextBox x:Name="PathBox" IsReadOnly="True" TextWrapping="Wrap" Height="60" />
+      <CheckBox x:Name="FlippedBox" Content="{x:Static lang:Resources.flipped}" IsEnabled="False" />
+      <Image x:Name="PreviewImage" Height="116" Stretch="Uniform" />
+    </StackPanel>
+  </Grid>
+</Window>

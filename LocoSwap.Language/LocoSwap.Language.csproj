@@ -1,70 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7D83BDFA-0272-416A-8893-29E300981A48}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>LocoSwap.Language</RootNamespace>
     <AssemblyName>LocoSwap.Language</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <GenerateResourceUsePreserializedResources>false</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Resources.it.resx">
-      <CustomToolNamespace>LocoSwap.Language</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.fr.resx" />
-    <EmbeddedResource Include="Resources\Resources.nl.resx" />
-    <EmbeddedResource Include="Resources\Resources.ru.resx">
-      <CustomToolNamespace>LocoSwap.Language</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.de.resx">
-      <CustomToolNamespace>LocoSwap.Language</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.resx">
-      <CustomToolNamespace>LocoSwap.Language</CustomToolNamespace>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Resources\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
